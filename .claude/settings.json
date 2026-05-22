@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "WebSearch",
+      "WebFetch(domain:quizlet.com)",
+      "WebFetch(domain:miesteema.fi)",
+      "WebFetch(domain:www.helsingintaksipalvelu.fi)",
+      "WebFetch(domain:www.scribd.com)",
+      "WebFetch(domain:quizgecko.com)",
+      "WebFetch(domain:taksikoe.fi)",
+      "WebFetch(domain:www.liikenneturva.fi)",
+      "WebFetch(domain:www.traficom.fi)",
+      "WebFetch(domain:www.kaleva.fi)",
+      "WebFetch(domain:www.taksiliitto.fi)",
+      "Bash(find /home/shakib/Desktop -maxdepth 3 -iname \"*Taxi exam*\" -type d 2>/dev/null; ls /home/shakib/Desktop/Taxi/)",
+      "Read(//home/shakib/Desktop/**)",
+      "Bash(cd \"/home/shakib/Desktop/Taxi\" && ls \"For Taxi exam-20260522T212718Z-3-001/For Taxi exam/Book \\(Images\\)/\" | sort -V > /tmp/book_imgs.txt && ls \"For Taxi exam-20260522T212718Z-3-001/For Taxi exam/Screen shots/\" | sort -V > /tmp/screen_imgs.txt && wc -l /tmp/book_imgs.txt /tmp/screen_imgs.txt)",
+      "Read(//tmp/**)",
+      "Bash(awk '/^const questions = \\\\[/,/^];/' /home/shakib/Desktop/Taxi/taxi_exam_study_plan.html)",
+      "Bash(awk '/^const webQuestions = \\\\[/,/^];/' /home/shakib/Desktop/Taxi/taxi_exam_study_plan.html)",
+      "Bash(pdftotext -layout \"/home/shakib/Desktop/Taxi/For Taxi exam-20260522T212718Z-3-001/For Taxi exam/120 Question.pdf\" 120q.txt)",
+      "Bash(pdftotext -layout \"/home/shakib/Desktop/Taxi/For Taxi exam-20260522T212718Z-3-001/For Taxi exam/answer for new taxi materials.pdf\" answers.txt)",
+      "Bash(pdftotext \"/home/shakib/Desktop/Taxi/For Taxi exam-20260522T212718Z-3-001/For Taxi exam/answer for new taxi materials.pdf\" /tmp/answers.txt)",
+      "Bash(grep -cE \"^  \\\\{$\" /home/shakib/Desktop/Taxi/taxi_exam_study_plan.html)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
