@@ -23,6 +23,11 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
@@ -30,6 +35,72 @@ body {
   line-height: 1.6;
   min-height: 100vh;
 }
+
+/* Prevent long Finnish words from breaking layout on mobile */
+.q-finnish, .q-english, .option, .opt-en,
+.day-content, .vocab-item, .topic-card,
+.result-item, .res-q-fi, .res-q-en,
+.source-info, .qr-hint {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Mobile header & hamburger (desktop: hidden) ---------- */
+.mobile-header {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hamburger {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.2s;
+  transform-origin: center;
+}
+body.sidebar-open .hamburger span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+body.sidebar-open .hamburger span:nth-child(2) { opacity: 0; }
+body.sidebar-open .hamburger span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 150;
+}
+body.sidebar-open .sidebar-backdrop { display: block; }
 
 .container {
   max-width: 1400px;
@@ -846,48 +917,93 @@ h1 {
   .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 }
 
-/* ============ MOBILE (≤ 768px) — sidebar collapses to top scroller ============ */
+/* ============ MOBILE (≤ 768px) — hamburger menu + slide-in drawer ============ */
 @media (max-width: 768px) {
   body { line-height: 1.5; }
+  .mobile-header { display: flex; }
   .container {
     grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 12px;
+    gap: 0;
+    padding: 0;
+    max-width: 100%;
   }
+  /* Sidebar becomes an off-canvas drawer */
   .sidebar {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 10;
+    left: 0;
+    bottom: 0;
+    width: 82vw;
+    max-width: 320px;
     background: var(--bg);
-    padding: 8px 0;
-    margin: -12px -12px 0;
-    padding: 10px 12px 8px;
-    border-bottom: 1px solid var(--border);
+    z-index: 200;
+    padding: 18px 16px;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.5);
+    border-right: 1px solid var(--border);
   }
-  h1 { font-size: 1.15rem; margin-bottom: 2px; }
-  .subtitle { font-size: 0.7rem; margin-bottom: 8px; }
+  body.sidebar-open .sidebar { transform: translateX(0); }
+  .main {
+    padding: 14px 12px 24px;
+    width: 100%;
+    max-width: 100%;
+  }
+  /* Inside the drawer the tabs are vertical again, like desktop */
+  h1 { font-size: 1.2rem; margin-bottom: 4px; }
+  .subtitle { font-size: 0.75rem; margin-bottom: 14px; }
   .tabs {
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 2px;
-    padding: 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    flex-direction: column;
+    overflow: visible;
+    gap: 4px;
+    padding: 6px;
+    max-width: 100%;
   }
-  .tab { white-space: nowrap; flex-shrink: 0; padding: 8px 12px; font-size: 0.78rem; }
+  .tab {
+    white-space: normal;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    width: 100%;
+  }
   .vocab-grid { grid-template-columns: 1fr; }
-  .day-card { padding: 12px 14px; gap: 12px; }
+  .day-card { padding: 12px 14px; gap: 12px; flex-wrap: wrap; }
   .day-num { min-width: 38px; height: 38px; font-size: 0.75rem; }
+  .day-content { flex: 1; min-width: 0; }
   .day-content h3 { font-size: 0.9rem; }
   .day-content p { font-size: 0.82rem; }
   .option { padding: 10px 12px; font-size: 0.85rem; }
   .option .opt-en { font-size: 0.72rem; }
   .quiz-source-tabs { flex-wrap: wrap; }
-  .qr-table td { font-size: 0.75rem; padding: 8px 8px; }
-  .qr-table th { font-size: 0.62rem; padding: 8px 6px; }
-  .mat-wrap { grid-template-columns: 1fr; min-height: auto; }
+  .quiz-controls { flex-wrap: wrap; }
+  .quiz-count-row { flex-wrap: wrap; padding: 12px; gap: 8px; }
+  .quiz-count-row label { width: 100%; }
+  .quiz-count-row input { flex: 1; min-width: 80px; }
+  .start-btn { margin-left: 0; width: 100%; margin-top: 6px; }
+  .quiz-nav { gap: 6px; }
+  .quiz-nav .quiz-btn, .quiz-nav .start-btn { flex: 1; min-width: 90px; }
+  .quiz-quit { flex: 0 0 auto !important; }
+  .score-bar { flex-wrap: wrap; gap: 8px; font-size: 0.78rem; }
+  .progress-track { flex: 1 1 100%; order: 3; }
+  .results-actions { flex-wrap: wrap; }
+  .result-row { flex-wrap: wrap; }
+  .result-row .label { min-width: 0; }
+  /* Quick Ref: compact 2-column layout on mobile (hide # column, smaller text, allow wrap) */
+  .qr-table { width: 100%; table-layout: fixed; }
+  .qr-table thead tr th:first-child,
+  .qr-table tbody tr td:first-child { display: none; }
+  .qr-table td, .qr-table th {
+    font-size: 0.72rem;
+    padding: 8px 6px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .mat-wrap { grid-template-columns: 1fr; min-height: auto; gap: 10px; }
   .mat-list { max-height: 200px; }
   .mat-frame { min-height: 60vh; }
+  .mat-toolbar { padding: 6px 10px; flex-wrap: wrap; gap: 8px; }
   .gallery { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
   .lb-btn { width: 44px; height: 44px; font-size: 2rem; }
   .lb-prev { left: 6px; }
@@ -898,28 +1014,40 @@ h1 {
 
 /* ============ SMALL MOBILE (≤ 480px) ============ */
 @media (max-width: 480px) {
-  .container { padding: 10px; gap: 12px; }
-  .sidebar { margin: -10px -10px 0; padding: 8px 10px 6px; }
-  h1 { font-size: 1.05rem; }
-  .subtitle { display: none; }
-  .tab { padding: 7px 10px; font-size: 0.72rem; }
+  .mobile-header { padding: 8px 12px; }
+  .mobile-title { font-size: 0.85rem; }
+  .main { padding: 12px 10px 20px; }
+  .sidebar { padding: 16px 14px; width: 85vw; }
+  h1 { font-size: 1.1rem; }
+  .subtitle { font-size: 0.7rem; margin-bottom: 10px; }
+  .tab { padding: 10px 12px; font-size: 0.85rem; }
   .week-label { font-size: 0.7rem; }
   .day-card { padding: 10px 12px; gap: 10px; }
   .vocab-item { padding: 8px 10px; font-size: 0.85rem; }
-  .qr-table td { font-size: 0.7rem; padding: 6px 6px; }
-  .qr-table th { font-size: 0.58rem; }
-  .mat-toolbar { padding: 6px 10px; flex-wrap: wrap; gap: 8px; }
+  .qr-table td, .qr-table th { font-size: 0.68rem; padding: 6px 4px; }
   .mat-title { font-size: 0.78rem; }
   .mat-open { font-size: 0.72rem; padding: 3px 8px; }
   .mat-frame { min-height: 55vh; }
-  .gallery { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); }
+  .gallery { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
   .lightbox img { max-width: 96vw; max-height: 80vh; }
 }
 </style>
 </head>
 <body>
+
+<!-- Mobile-only top header with hamburger -->
+<header class="mobile-header">
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="mobile-title">🚕 Taksinkuljettajan Koe</span>
+</header>
+
+<!-- Backdrop that closes the slide-in sidebar when tapped -->
+<div class="sidebar-backdrop" onclick="closeSidebar()"></div>
+
 <div class="container">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <h1>🚕 Taksinkuljettajan Koe</h1>
     <p class="subtitle">Taxi Driver Exam Prep — Tampere, Finland</p>
 
@@ -1478,12 +1606,30 @@ h1 {
 </div>
 
 <script>
+// Sidebar drawer (mobile)
+function toggleSidebar() {
+  document.body.classList.toggle('sidebar-open');
+}
+function closeSidebar() {
+  document.body.classList.remove('sidebar-open');
+}
+
+// Close drawer on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+    closeSidebar();
+  }
+});
+
 // Tab switching
 function showPanel(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   event.target.classList.add('active');
+  closeSidebar();
+  // Scroll to top after tab switch on mobile
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // Quiz data
