@@ -2,16 +2,21 @@
 
 A single-file interactive study tool for the Finnish taxi driver theory exam (Tampere). Built around the Arabic question doc `امتحان اسئلة التكسي.docx`, the new-folder PDF library, and image references — all bundled into one local HTML page.
 
+**Live site:** https://mdshakibprodhan.github.io/TaxiPreparation/
+**Repo:** https://github.com/MdShakibProdhan/TaxiPreparation
+
 ## Files
 
 - `امتحان اسئلة التكسي.docx` — original Arabic source document; correct answers marked in red.
 - `For Taxi exam-20260522T212718Z-3-001/For Taxi exam/` — 12 PDF study materials plus image folders (`Book (Images)/`, `Screen shots/`).
-- `taxi_exam_study_plan.html` — single self-contained study app (HTML + CSS + JS, no build step, no dependencies, ~3,400 lines).
+- `index.html` — single self-contained study app (HTML + CSS + JS, no build step, no dependencies, ~3,400 lines).
 - `PROJECT_SUMMARY.md` — this file.
 
 ## How to use
 
-Open `taxi_exam_study_plan.html` in any browser. Everything runs locally — no server, no internet. Keep the `For Taxi exam-…/` folder next to the HTML so the PDF viewer and image galleries can find their files.
+**Online:** open the live site at https://mdshakibprodhan.github.io/TaxiPreparation/. The `For Taxi exam-…/` folder is already in the repo, so the **Materials** and image gallery tabs work on the hosted site too.
+
+**Local:** open `index.html` in any browser. Everything runs locally — no server, no internet. Keep the `For Taxi exam-…/` folder next to the HTML so the PDF viewer and image galleries can find their files.
 
 ## Layout
 
@@ -106,3 +111,4 @@ Gallery of the 34 study screenshots from `Screen shots/`. Same lightbox / keyboa
 7. Added layered responsive breakpoints for tablet (≤1024px), mobile (≤768px) and small mobile (≤480px), with the sidebar collapsing into a sticky horizontal scroller on mobile.
 8. Refactored the quiz: **setup → answer all → results** flow. Added a count input (with 5/10/20/50/All presets), Previous/Next/Submit/Quit controls, and a full results screen showing each question with your answer (red if wrong) next to the correct answer (green) plus explanation. Filterable by All / Wrong / Right.
 9. Extracted **131 new questions** from the new-folder PDFs (using the bilingual 77-Questions PDF with → arrows as the primary answer key) and added them as `newDocQuestions` (IDs 200–330). Pool counts: Doc 208, All 258. New questions get a **NEW DOC** badge during the quiz.
+10. Renamed `taxi_exam_study_plan.html` → `index.html` and published to GitHub Pages at https://mdshakibprodhan.github.io/TaxiPreparation/.

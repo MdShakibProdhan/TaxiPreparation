@@ -23,7 +23,8 @@
       "Bash(pdftotext -layout \"/home/shakib/Desktop/Taxi/For Taxi exam-20260522T212718Z-3-001/For Taxi exam/answer for new taxi materials.pdf\" answers.txt)",
       "Bash(pdftotext \"/home/shakib/Desktop/Taxi/For Taxi exam-20260522T212718Z-3-001/For Taxi exam/answer for new taxi materials.pdf\" /tmp/answers.txt)",
       "Bash(grep -cE \"^  \\\\{$\" /home/shakib/Desktop/Taxi/taxi_exam_study_plan.html)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(xxd)"
     ]
   }
 }
